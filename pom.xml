@@ -1,0 +1,581 @@
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>ecosys</artifactId>
+	<name>Ecosys</name>
+	<version>1.0.2</version>
+	<parent>
+		<groupId>se.facilia</groupId>
+		<artifactId>facilia-development</artifactId>
+		<version>6.5.31</version>
+	</parent>
+	<properties>
+		<ftp.appdir>ecosys</ftp.appdir>
+		<ftp.update-path>${ftp.remotedir}/updates/${parsedVersion.majorVersion}.${parsedVersion.minorVersion}</ftp.update-path>		
+
+		<project.package>se.facilia.ecosys</project.package>
+		<project.path>se/facilia/ecosys</project.path>
+
+<!--  
+		<repository.id.thirdparty>thirdparty</repository.id.thirdparty>
+		<repository.url.thirdparty>http://nexus.facilia.se/content/repositories/thirdparty</repository.url.thirdparty>
+
+		<repository.id.snapshots>snapshots</repository.id.snapshots>
+		<repository.url.snapshots>http://nexus.facilia.se/content/repositories/snapshots</repository.url.snapshots>
+
+		<repository.id.releases>releases</repository.id.releases>
+		<repository.url.releases>http://nexus.facilia.se/content/repositories/releases</repository.url.releases>
+
+		<repository.id.updates>updates</repository.id.updates>
+		<repository.url.updates>http://nexus.facilia.se/content/repositories/releases</repository.url.updates>
+
+		<repository.id.current>${release-label}</repository.id.current>
+		<repository.url.current>http://nexus.facilia.se/content/repositories/${release-label}</repository.url.current>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<installer.dir>${project.build.directory}/installer</installer.dir>
+		<installer.lib>${installer.dir}/${project.name}/lib</installer.lib>
+		<installer.updates>${installer.dir}/updates</installer.updates>
+
+		<ftp.rootdir>/var/www/projects</ftp.rootdir>
+		<ftp.server>facilia4.space2u.com</ftp.server>
+		<ftp.remotedir>${ftp.rootdir}/${ftp.appdir}</ftp.remotedir> 
+		-->
+	</properties>
+	
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>installer/**</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<!-- Copy model into installer lib directory -->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.1</version>
+
+				<executions>
+					<execution>
+						<id>copy-model-files-to-installer-lib</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${installer.dir}/${project.name}/lib</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources/model</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+						</execution>
+						<execution>
+						<id>copy-model-files-to-lib</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources/model</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<excludes>
+						<exclude>EcolegoTestCase.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.0</version>
+				<configuration>
+					<excludes>
+						<exlude>se/facilia/clearancetool/script*/**</exlude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<forkMode>once</forkMode>
+					<workingDirectory>${basedir}</workingDirectory>
+					<argLine>-Djava.library.path=${project.build.directory}/lib/dll/64</argLine>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>se.facilia</groupId>
+									<artifactId>radionuclide-database</artifactId>
+									<version>1.0.0</version>
+									<type>zip</type>
+									<overWrite>false</overWrite>
+									<outputDirectory>${project.build.directory}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>se.facilia</groupId>
+									<artifactId>facilia-ecolego-report-data</artifactId>
+									<version>1.0.0</version>
+									<type>zip</type>
+									<overWrite>false</overWrite>
+									<outputDirectory>${project.build.directory}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>se.facilia</groupId>
+									<artifactId>facilia-ecolego-images</artifactId>
+									<version>1.0.0</version>
+									<type>zip</type>
+									<overWrite>false</overWrite>
+									<outputDirectory>${project.build.directory}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>se.facilia</groupId>
+									<artifactId>facilia-dll</artifactId>
+									<version>1.0.0</version>
+									<type>zip</type>
+									<overWrite>false</overWrite>
+									<outputDirectory>${project.build.directory}/lib</outputDirectory>
+									<includes>**/*</includes>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+
+
+					<execution>
+						<id>unpack</id>
+						<phase>package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>se.facilia</groupId>
+									<artifactId>facilia-dll</artifactId>
+									<version>1.0.2</version>
+									<type>zip</type>
+									<overWrite>false</overWrite>
+									<outputDirectory>${project.build.directory}/lib</outputDirectory>
+									<includes>**/*</includes>
+								</artifactItem>
+								<artifactItem>
+									<groupId>se.facilia</groupId>
+									<artifactId>newdb-dll</artifactId>
+									<version>1.0.0</version>
+									<type>zip</type>
+									<overWrite>false</overWrite>
+									<outputDirectory>${project.build.directory}/lib</outputDirectory>
+									<includes>**/*</includes>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+
+
+					<execution>
+						<id>unpack-integration-test-data</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>se.facilia</groupId>
+									<artifactId>facilia-test-data</artifactId>
+									<version>0.0.2</version>
+									<type>jar</type>
+									<overWrite>false</overWrite>
+									<outputDirectory>${project.build.directory}\test-classes</outputDirectory>
+									<includes>**/*</includes>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>copy-dependencies-for-testing</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<includeScope>runtime</includeScope>
+						</configuration>
+					</execution>
+
+					<!-- Copy application jar to the update folder -->
+					<execution>
+						<id>copy-application-jar-for-testing</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>${project.artifactId}</artifactId>
+									<version>${project.version}</version>
+									<type>${project.packaging}</type>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+
+
+
+		<!-- uploads the installer files to the update (ftp) server -->
+		<profile>
+			<id>deploy-windows-installers</id>
+
+			<activation>
+				<property>
+					<name>generate-installers</name>
+					<value>true</value>
+				</property>
+				<os>
+					<family>
+						Windows
+					</family>
+				</os>
+			</activation>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+
+						<executions>
+							<execution>
+								<id>upload-installers</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<!-- Delete old installers -->
+										<ftp verbose="true" passive="true" action="del"
+											userid="${settings.servers.updates.username}" password="${settings.servers.updates.password}"
+											remotedir="${ftp.remotedir}" server="${ftp.server}">
+											<fileset>
+												<include name="**bit.exe" />
+											</fileset>
+										</ftp>
+
+										<!-- Upload directory -->
+										<ftp verbose="true" passive="true" action="send" binary="true"
+											userid="${settings.servers.updates.username}" password="${settings.servers.updates.password}"
+											remotedir="${ftp.remotedir}" server="${ftp.server}">
+											<fileset dir="${project.build.directory}">
+												<include name="**bit.exe" />
+											</fileset>
+										</ftp>
+
+										<echo message="Transfer complete!" />
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+
+						<dependencies>
+							<dependency>
+								<groupId>commons-net</groupId>
+								<artifactId>commons-net</artifactId>
+								<version>1.4.1</version>
+							</dependency>
+							<dependency>
+								<groupId>org.apache.ant</groupId>
+								<artifactId>ant-commons-net</artifactId>
+								<version>1.8.1</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	<!-- uploads the OSX installer file to the update (ftp) server 
+		<profile>
+			<id>deploy-osx-installer</id>
+
+			<activation>
+				<property>
+					<name>generate-installers</name>
+					<value>true</value>
+				</property>
+				
+				<os>
+					<name>Mac OS X</name>
+				</os>
+				
+			</activation>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+
+						<executions>
+							<execution>
+								<id>upload-installers</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										
+										<ftp verbose="true" passive="true" action="del"
+											userid="${settings.servers.updates.username}" password="${settings.servers.updates.password}"
+											remotedir="${ftp.remotedir}" server="${ftp.server}">
+											<fileset>
+												<include name="**dmg" />
+											</fileset>
+										</ftp>
+
+										<ftp verbose="true" passive="true" action="send" binary="true"
+											userid="${settings.servers.updates.username}" password="${settings.servers.updates.password}"
+											remotedir="${ftp.remotedir}" server="${ftp.server}">
+											<fileset dir="${project.build.directory}">
+												<include name="**dmg" />
+											</fileset>
+										</ftp>
+
+										<echo message="Transfer complete!" />
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+
+						<dependencies>
+							<dependency>
+								<groupId>commons-net</groupId>
+								<artifactId>commons-net</artifactId>
+								<version>1.4.1</version>
+							</dependency>
+							<dependency>
+								<groupId>org.apache.ant</groupId>
+								<artifactId>ant-commons-net</artifactId>
+								<version>1.8.1</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile> -->
+
+		<profile>
+			<id>deploy-web</id>
+
+			<activation>
+				<property>
+					<name>generate-installers</name>
+					<value>true</value>
+				</property>
+				<os>
+					<family>
+						Windows
+					</family>
+				</os>
+			</activation>
+
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>3.0.1</version>
+
+						<executions>
+							<execution>
+								<id>copy-web-to-build-dir</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}/web</outputDirectory>
+									<resources>
+										<resource>
+											<directory>src/main/resources/web</directory>
+											<filtering>true</filtering>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+
+						<executions>
+							<execution>
+								<id>upload-web</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<!-- Delete old html files -->
+										<ftp verbose="true" passive="true" action="del"
+											userid="${settings.servers.updates.username}" password="${settings.servers.updates.password}"
+											remotedir="${ftp.remotedir}" server="${ftp.server}">
+											<fileset>
+												<include name="*.html" />
+											</fileset>
+										</ftp>
+
+										<!-- Upload web directory -->
+										<ftp verbose="true" passive="true" action="send" binary="true"
+											userid="${settings.servers.updates.username}" password="${settings.servers.updates.password}"
+											remotedir="${ftp.remotedir}" server="${ftp.server}">
+											<fileset dir="${project.build.directory}/web">
+												<include name="**" />
+											</fileset>
+										</ftp>
+
+										<!-- Upload model directory -->
+										<ftp verbose="true" passive="true" action="send" binary="true"
+											userid="${settings.servers.updates.username}" password="${settings.servers.updates.password}"
+											remotedir="${ftp.remotedir}" server="${ftp.server}">
+											<fileset dir="src/main/resources/model">
+												<include name="**" />
+											</fileset>
+										</ftp>
+
+										<echo message="Transfer complete!" />
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+
+						<dependencies>
+							<dependency>
+								<groupId>commons-net</groupId>
+								<artifactId>commons-net</artifactId>
+								<version>1.4.1</version>
+							</dependency>
+							<dependency>
+								<groupId>org.apache.ant</groupId>
+								<artifactId>ant-commons-net</artifactId>
+								<version>1.8.1</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	<dependencies>
+		<dependency>
+			<artifactId>facilia-ecolego-player</artifactId>
+			<groupId>${project.parent.groupId}</groupId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
+		<dependency>
+			<artifactId>facilia-ecolego</artifactId>
+			<groupId>${project.parent.groupId}</groupId>
+			<version>${project.parent.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<artifactId>facilia-common</artifactId>
+			<groupId>${project.parent.groupId}</groupId>
+			<version>${project.parent.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>thirdparty</id>
+			<name>Facilia Nexus 3d party</name>
+			<url>http://nexus.facilia.se/content/repositories/thirdparty</url>
+		</repository>
+
+		<repository>
+			<id>snapshots</id>
+			<name>Facilia Nexus Snapshots</name>
+			<url>http://nexus.facilia.se/content/repositories/snapshots</url>
+		</repository>
+
+		<repository>
+			<id>releases</id>
+			<name>Facilia Nexus Releases</name>
+			<url>http://nexus.facilia.se/content/repositories/releases</url>
+		</repository>
+	</repositories>
+</project>
