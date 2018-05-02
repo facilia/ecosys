@@ -28,6 +28,8 @@ public class EcosysDefaults extends PlayerDefaults {
 		Resources.setDefaultBundlePath("se.facilia.ecosys.resources.DefaultsBundle");
 		Resources.setApplicationName("Ecosys 1.0");
 		Resources.setAvailableLocales("en"); //$NON-NLS-1$
+
+		setApplicationName();
 	}
 
 	@Override

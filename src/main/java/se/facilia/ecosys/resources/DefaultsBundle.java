@@ -6,7 +6,7 @@ public class DefaultsBundle extends ListResourceBundle {
 	private final Object[][] contents = { { "config", "se/facilia/ecosys/resources/player-config.xml" },
 			// Updates
 			{ "update.home",
-					"http://project.facilia.se/ecosys/updates" + System.getProperty("application.version.major-minor")
+					"http://project.facilia.se/ecosys/updates/" + System.getProperty("application.version.major-minor")
 							+ "/" + System.getProperty("application.build-type") + "/" },
 			{ "update.updated", Boolean.FALSE }, //$NON-NLS-1$
 			{ "update.changelog", "se/facilia/ecosys/resources/changelog.html" }, //$NON-NLS-1$ //$NON-NLS-2$

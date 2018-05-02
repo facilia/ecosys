@@ -7,26 +7,73 @@
 		<logo>se/facilia/player/resources/images/Logo.png</logo>
 
 		<views default="player-context">
-			<view id="player-context" default="true" special="true" class="se.facilia.player.ui.view.context.PlayerContextView" action="ShowPlayerContextViewAction"/>
-			<view id="player-model" class="se.facilia.player.ui.view.model.PlayerModelView" action="ShowPlayerModelViewAction"/>
-			<view id="player-option" class="se.facilia.player.ui.view.option.PlayerOptionView" action="ShowPlayerOptionViewAction"/>
-			<view id="player-timeseries" class="se.facilia.player.ui.view.timeseries.PlayerTimeSeriesView" action="ShowPlayerTimeSeriesViewAction"/>
-			<view id="player-parameter" class="se.facilia.player.ui.view.parameter.PlayerParameterView" action="ShowPlayerParameterViewAction"/>
-			<view id="player-simulation" special="true" class="se.facilia.player.ui.view.simulation.PlayerSimulationView" action="ShowPlayerSimulationViewAction"/>
-			<view id="player-result-charts" class="se.facilia.player.ui.view.result.PlayerChartView" action="ShowPlayerChartResultViewAction"/>
-			<view id="player-result-tables" class="se.facilia.player.ui.view.result.PlayerTableView" action="ShowPlayerTableResultViewAction"/>
-			<view id="player-report" class="se.facilia.player.ui.view.report.PlayerReportView" action="ShowPlayerReportViewAction"/>
+			<view id="player-context" default="true" special="true"
+				class="se.facilia.player.ui.view.context.PlayerContextView" action="ShowPlayerContextViewAction" />
+			<view id="player-model" class="se.facilia.player.ui.view.model.PlayerModelView"
+				action="ShowPlayerModelViewAction" />
+			<view id="player-option" class="se.facilia.player.ui.view.option.PlayerOptionView"
+				action="ShowPlayerOptionViewAction" />
+			<view id="player-timeseries"
+				class="se.facilia.player.ui.view.timeseries.PlayerTimeSeriesView"
+				action="ShowPlayerTimeSeriesViewAction" />
+			<view id="player-parameter"
+				class="se.facilia.player.ui.view.parameter.PlayerParameterView"
+				action="ShowPlayerParameterViewAction" />
+			<view id="player-simulation" special="true"
+				class="se.facilia.player.ui.view.simulation.PlayerSimulationView"
+				action="ShowPlayerSimulationViewAction" />
+			<view id="player-result-charts" class="se.facilia.player.ui.view.result.PlayerChartView"
+				action="ShowPlayerChartResultViewAction" />
+			<view id="player-result-tables" class="se.facilia.player.ui.view.result.PlayerTableView"
+				action="ShowPlayerTableResultViewAction" />
+			<view id="player-report" class="se.facilia.player.ui.view.report.PlayerReportView"
+				action="ShowPlayerReportViewAction" />
 		</views>
 		<settings>
 			<setting name="view-titlebar">false</setting>
 		</settings>
 		<project-templates>
 			<project-template>
-				<name>New project</name>
-				<file>ECOSYS_14_12_2017.eco</file>
-				<description>Start a new project with the December 2017 version</description>
+				<name>Total deposition</name>
+				<file>ECOSYS_15_02_2018_Total_Deposition.eco</file>
+				<description>
+					Inputs:
+					Activity concentration in air,
+					total deposition
+					(onto bare soil/pasture/lawn),
+					amount of rainfall
+				</description>
+			</project-template>
+			<project-template>
+				<name>Grass</name>
+				<file>ECOSYS_16_02_2018_Grass_Activity.eco</file>
+				<description>
+					Inputs:
+					Total deposition,
+					activity in grass,
+					yield of
+					grass (optional),
+					amount of rainfall
+				</description>
+			</project-template>
+			<project-template>
+				<name>Wet deposition</name>
+				<file>ECOSYS_15_02_2018_Wet_Deposition.eco</file>
+				<description>
+					Inputs:
+					Activity concentration in air,
+					wet deposition,
+					amount of rainfall
+				</description>
+			</project-template>
+			<project-template>
+				<name>All inputs</name>
+				<file>ECOSYS_16_02_2018_ALL_INPUTS.eco</file>
+				<description>
+					Future version where all inputs are defined in the same
+					input sub-system
+				</description>
 			</project-template>
 		</project-templates>
 	</workbench>
-
 </player>

@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ecosys</artifactId>
 	<name>Ecosys</name>
-	<version>1.0.2</version>
+	<version>1.0.9</version>
 	<parent>
 		<groupId>se.facilia</groupId>
 		<artifactId>facilia-development</artifactId>
-		<version>6.5.31</version>
+		<version>6.5.39</version>
 	</parent>
 	<properties>
 		<ftp.appdir>ecosys</ftp.appdir>
