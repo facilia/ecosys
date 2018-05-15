@@ -173,14 +173,6 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>se.facilia</groupId>
-									<artifactId>facilia-ecolego-images</artifactId>
-									<version>1.0.0</version>
-									<type>zip</type>
-									<overWrite>false</overWrite>
-									<outputDirectory>${project.build.directory}/lib</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>se.facilia</groupId>
 									<artifactId>facilia-dll</artifactId>
 									<version>1.0.0</version>
 									<type>zip</type>
